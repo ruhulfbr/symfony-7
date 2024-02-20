@@ -22,7 +22,7 @@ use App\EventListener\ProductCreatedListener;
 #[Route('/product')]
 class ProductController extends AbstractController
 {
-    protected  $eventDispatcher;
+    protected $eventDispatcher;
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
@@ -44,11 +44,11 @@ class ProductController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($product);
+            $entityManager->flush();
 
+        //  Dispatch Event
             $event = new ProductCreatedEvent($product);
             $this->eventDispatcher->dispatch($event, ProductCreatedEvent::NAME);
-
-            $entityManager->flush();
 
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -75,10 +75,11 @@ class ProductController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $entityManager->flush();
+
+            //  Dispatch Event
             $event = new ProductUpdatedEvent($product);
             $this->eventDispatcher->dispatch($event, ProductUpdatedEvent::NAME);
-
-            $entityManager->flush();
 
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -94,11 +95,11 @@ class ProductController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
             $entityManager->remove($product);
+            $entityManager->flush();
 
             $event = new ProductDeletedEvent($product);
             $this->eventDispatcher->dispatch($event, ProductDeletedEvent::NAME);
 
-            $entityManager->flush();
         }
 
         return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
