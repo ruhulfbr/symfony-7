@@ -65,7 +65,6 @@ class HomeController extends AbstractController
 
     public function pageCheck(Request $request, int $page, LoggerInterface $logger): Response
     {
-
 //        $routeName = $request->attributes->get('_route');
 //        $routeParameters = $request->attributes->get('_route_params');
 //        $allAttributes = $request->attributes->all();
