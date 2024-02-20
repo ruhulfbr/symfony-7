@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Welcome to Symfony!</title>
+    </head>
+    <body>
+        <h1>{{ page_title ?? "Sample App"  }}</h1>
+
+        <h3>{{ page }} Your lucky number is {{ number }}</h3>
+
+        <a href="{{ path('base.home', {page: 20}) }}">Page</a>
+
+        <p>The Google tracking code is: {{ ga_tracking }}</p>
+{#        <p>UUID: {{ uuid.generate }}</p>#}
+
+        <img src="{{ asset('images/logo.png') }}" alt="Symfony!"/>
+
+    </body>
+</html>

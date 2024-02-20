@@ -1,0 +1,9 @@
+twig:
+    file_name_pattern: '*.twig'
+    globals:
+        ga_tracking: 'UA-xxxxx-x'
+#        uuid: '@App\Generator\UuidGenerator'
+
+when@test:
+    twig:
+        strict_variables: true
