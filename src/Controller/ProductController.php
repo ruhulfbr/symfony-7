@@ -6,14 +6,27 @@ use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+use App\Event\ProductCreatedEvent;
+use App\Event\ProductUpdatedEvent;
+use App\Event\ProductDeletedEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+use App\EventListener\ProductCreatedListener;
+
 #[Route('/product')]
 class ProductController extends AbstractController
 {
+    protected  $eventDispatcher;
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
     #[Route('/', name: 'app_product_index', methods: ['GET'])]
     public function index(ProductRepository $productRepository): Response
     {
@@ -31,6 +44,10 @@ class ProductController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($product);
+
+            $event = new ProductCreatedEvent($product);
+            $this->eventDispatcher->dispatch($event, ProductCreatedEvent::NAME);
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
@@ -57,6 +74,10 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $event = new ProductUpdatedEvent($product);
+            $this->eventDispatcher->dispatch($event, ProductUpdatedEvent::NAME);
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
@@ -73,6 +94,10 @@ class ProductController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
             $entityManager->remove($product);
+
+            $event = new ProductDeletedEvent($product);
+            $this->eventDispatcher->dispatch($event, ProductDeletedEvent::NAME);
+
             $entityManager->flush();
         }
 

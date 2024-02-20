@@ -20,5 +20,21 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    App\EventListener\ProductCreatedListener:
+        tags:
+            - { name: 'kernel.event_listener', event: 'product.created', method: 'onProductCreated' }
+
+    App\EventListener\ProductUpdatedListener:
+        tags:
+            - { name: 'kernel.event_listener', event: 'product.updated', method: 'onProductUpdated' }
+
+    App\EventListener\ProductDeletedListener:
+        tags:
+            - { name: 'kernel.event_listener', event: 'product.deleted', method: 'onProductDeleted' }
+
+    App\EventSubscriber\ProductEventSubscriber:
+        tags:
+            - { name: 'kernel.event_listener' }
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
