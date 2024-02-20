@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Entity\Category;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,8 +29,22 @@ class ProductController extends AbstractController
         $this->eventDispatcher = $eventDispatcher;
     }
     #[Route('/', name: 'app_product_index', methods: ['GET'])]
-    public function index(ProductRepository $productRepository): Response
+    public function index(ProductRepository $productRepository, EntityManagerInterface $entityManager): Response
     {
+//        $category = new Category();
+//        $category->setName('Computer Peripherals');
+//
+//        $product = new Product();
+//        $product->setName('Keyboard');
+//        $product->setPrice(19.99);
+//
+//        // relates this product to the category
+//        $product->setCategory($category);
+//
+//        $entityManager->persist($category);
+//        $entityManager->persist($product);
+//        $entityManager->flush();
+
         return $this->render('product/index.html.twig', [
             'products' => $productRepository->findAll(),
         ]);
@@ -62,6 +77,9 @@ class ProductController extends AbstractController
     #[Route('/{id}', name: 'app_product_show', methods: ['GET'])]
     public function show(Product $product): Response
     {
+//        $categoryName = $product?->getCategory()?->getName();
+//        echo $categoryName;
+
         return $this->render('product/show.html.twig', [
             'product' => $product,
         ]);

@@ -1,5 +1,6 @@
 twig:
     file_name_pattern: '*.twig'
+    form_themes: ['bootstrap_5_layout.html.twig']
     globals:
         ga_tracking: 'UA-xxxxx-x'
 #        uuid: '@App\Generator\UuidGenerator'
