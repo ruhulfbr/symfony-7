@@ -48,7 +48,9 @@ class ProductEventSubscriber implements EventSubscriberInterface
     {
         // write code to execute on product updation event
 
-        $this->logger->info("Event Subscriber => Product Updated");
+        $product = $event->getProduct();
+
+        $this->logger->info("Event Subscriber => Product Updated. Id:  ".$product->getId());
     }
 
     public function afterProductUpdation(ProductUpdatedEvent $event):void

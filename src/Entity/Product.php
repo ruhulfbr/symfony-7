@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,6 +33,12 @@ class Product
 
     #[ORM\ManyToOne(inversedBy: 'products')]
     private ?Category $category = null;
+
+
+    public function __construct()
+    {
+
+    }
 
     public function getId(): ?int
     {
@@ -108,4 +116,17 @@ class Product
 
         return $this;
     }
+
+    public function preUpdate()
+    {
+        // Access the entity's state before update
+        $entityManager = $this->getDoctrine()->getManager();
+        $unitOfWork = $entityManager->getUnitOfWork();
+        $unitOfWork->computeChangeSets();
+        $changeset = $unitOfWork->getEntityChangeSet($this);
+
+        // $changeset will contain the changes made to the entity
+        // before it's updated
+    }
+
 }
