@@ -4,14 +4,11 @@ namespace App\Controller;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
-
-
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
+
 
 class HomeController extends AbstractController
 {
@@ -43,23 +40,24 @@ class HomeController extends AbstractController
 //
 //        echo $contents;
 
-        return $this->render($this->_VIEW_PATH.'index.html.twig', [
+
+        return $this->render($this->_VIEW_PATH . 'index.html.twig', [
             'number' => $number,
-            'page'   => 'Dashboard'
+            'page' => 'Dashboard'
         ]);
     }
 
     public function number(
         #[MapQueryParameter] string $firstName,
         #[MapQueryParameter] string $lastName,
-        #[MapQueryParameter] int $age
+        #[MapQueryParameter] int    $age
     ): Response
     {
         $number = random_int(100, 1000);
 
-        return $this->render($this->_VIEW_PATH.'index.html.twig', [
+        return $this->render($this->_VIEW_PATH . 'index.html.twig', [
             'number' => $number,
-            'page'   => 'Home'
+            'page' => 'Home'
         ]);
     }
 
@@ -87,9 +85,9 @@ class HomeController extends AbstractController
 
 
         $number = $page;
-        return $this->render($this->_VIEW_PATH.'index.html.twig', [
+        return $this->render($this->_VIEW_PATH . 'index.html.twig', [
             'number' => $number,
-            'page'   => 'Page'
+            'page' => 'Page'
         ]);
     }
 }

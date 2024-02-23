@@ -4,20 +4,17 @@ namespace App\EventSubscriber;
 
 use App\Entity\EntityAudited;
 use App\Event\EntityCreatedEvent;
-use App\Event\EntityUpdatedEvent;
 use App\Event\EntityDeletedEvent;
+use App\Event\EntityUpdatedEvent;
 use App\Repository\EntityAuditedRepository;
 use Doctrine\ORM\EntityManagerInterface;
-
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\ResponseEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
 
 class EntityAuditedSubscriber implements EventSubscriberInterface
 {
 
-    private $logger;
+    private LoggerInterface $logger;
     private $entityAudit;
     private $entityManager;
 
@@ -65,10 +62,9 @@ class EntityAuditedSubscriber implements EventSubscriberInterface
         $entityMetadata = $this->entityManager->getClassMetadata(get_class($entity));
         $entityType = $entityMetadata->getReflectionClass()->getShortName();
 
-        if ($action == 'Updated' && $dirtyData) {
+        if ($action == 'Updated') {
             $entityData = $this->getUpdatedData($dirtyData);
-        }
-        else{
+        } else {
             $entityData = $this->getRowData($entity, $entityMetadata);
         }
 
@@ -81,7 +77,18 @@ class EntityAuditedSubscriber implements EventSubscriberInterface
 
         $this->entityManager->persist($audit);
         $this->entityManager->flush();
+    }
 
+    private function getUpdatedData($dirtyData): array
+    {
+        $updateData = [];
+        if (!empty($dirtyData)) {
+            foreach ($dirtyData as $key => $value) {
+                $updateData[$key] = $value[1];
+            }
+        }
+
+        return $updateData;
     }
 
     private function getRowData($entity, $entityMetadata): array
@@ -98,17 +105,5 @@ class EntityAuditedSubscriber implements EventSubscriberInterface
         }
 
         return $entityData;
-    }
-
-    private function getUpdatedData($dirtyData): array
-    {
-        $updateData = [];
-        if (!empty($dirtyData)) {
-            foreach ($dirtyData as $key => $value) {
-                $updateData[$key] = $value[1];
-            }
-        }
-
-        return $updateData;
     }
 }

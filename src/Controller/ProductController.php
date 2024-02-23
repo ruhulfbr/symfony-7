@@ -3,56 +3,41 @@
 namespace App\Controller;
 
 use App\Entity\Product;
-use App\Entity\Category;
+use App\Event\EntityCreatedEvent;
+use App\Event\EntityDeletedEvent;
+use App\Event\EntityUpdatedEvent;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-use App\Event\ProductCreatedEvent;
-use App\Event\ProductUpdatedEvent;
-use App\Event\ProductDeletedEvent;
-use App\Event\EntityCreatedEvent;
-use App\Event\EntityUpdatedEvent;
-use App\Event\EntityDeletedEvent;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
-use App\EventListener\ProductCreatedListener;
-
 #[Route('/product')]
 class ProductController extends AbstractController
 {
-    protected $eventDispatcher;
-    protected $entityManager;
+    protected EventDispatcherInterface $eventDispatcher;
+    protected EntityManagerInterface $entityManager;
+    protected ProductRepository $productRepository;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher, EntityManagerInterface $entityManager)
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        EntityManagerInterface   $entityManager,
+        ProductRepository        $productRepository
+    )
     {
         $this->eventDispatcher = $eventDispatcher;
         $this->entityManager = $entityManager;
+        $this->productRepository = $productRepository;
     }
-    #[Route('/', name: 'app_product_index', methods: ['GET'])]
-    public function index(ProductRepository $productRepository): Response
-    {
-//        $category = new Category();
-//        $category->setName('Computer Peripherals');
-//
-//        $product = new Product();
-//        $product->setName('Keyboard');
-//        $product->setPrice(19.99);
-//
-//        // relates this product to the category
-//        $product->setCategory($category);
-//
-//        $this->entityManager->persist($category);
-//        $this->entityManager->persist($product);
-//        $this->entityManager->flush();
 
+    #[Route('/', name: 'app_product_index', methods: ['GET'])]
+    public function index(): Response
+    {
         return $this->render('product/index.html.twig', [
-            'products' => $productRepository->findAll(),
+            'products' => $this->productRepository->findAll(),
         ]);
     }
 
@@ -67,7 +52,7 @@ class ProductController extends AbstractController
             $this->entityManager->persist($product);
             $this->entityManager->flush();
 
-        //  Dispatch Event
+            //  Dispatch Event
             $event = new EntityCreatedEvent($product);
             $this->eventDispatcher->dispatch($event, EntityCreatedEvent::NAME);
 
@@ -94,17 +79,14 @@ class ProductController extends AbstractController
     #[Route('/{id}/edit', name: 'app_product_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Product $product): Response
     {
-        $oldProduct = clone $product;
-
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             // Get dirty dta
-            $dirty = $this->entityManager->getUnitOfWork();
-            $dirty->computeChangeSets();
-            $dirtyData = $dirty->getEntityChangeSet($product);
+            $entityUnitOfWork = $this->entityManager->getUnitOfWork();
+            $entityUnitOfWork->computeChangeSets();
+            $dirtyData = $entityUnitOfWork->getEntityChangeSet($product);
 
             $this->entityManager->flush();
 
@@ -122,15 +104,15 @@ class ProductController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_product_delete', methods: ['POST'])]
-    public function delete(Request $request, Product $product, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Product $product): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
 
             $event = new EntityDeletedEvent($product);
             $this->eventDispatcher->dispatch($event, EntityDeletedEvent::NAME);
 
-            $entityManager->remove($product);
-            $entityManager->flush();
+            $this->entityManager->remove($product);
+            $this->entityManager->flush();
         }
 
         return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
