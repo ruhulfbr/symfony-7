@@ -40,6 +40,10 @@ services:
     tags:
       - { name: 'kernel.event_listener', event: 'entity.deleted', method: 'onUserDeleted' }
 
+  App\EventListener\WelcomeMailSendFailureListener:
+    tags:
+      - { name: 'kernel.event_listener', method: 'onMailSendFailed' }
+
   App\EventSubscriber\ProductEventSubscriber:
     tags:
       - { name: 'kernel.event_listener' }

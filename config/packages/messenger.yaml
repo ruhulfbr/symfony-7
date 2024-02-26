@@ -1,15 +1,18 @@
 framework:
   messenger:
     # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
-    # failure_transport: failed
+    #    failure_transport: failed
 
     transports:
       # https://symfony.com/doc/current/messenger.html#transport-configuration
-      async: '%env(MESSENGER_TRANSPORT_DSN_SEND_WELCOME_MAIL)%'
       # deleteuser: '%env(MESSENGER_TRANSPORT_DSN_DELETE_USER)%'
-      # failed: 'doctrine://default?queue_name=failed'
+      #failed: '%env(MESSENGER_TRANSPORT_DSN_FAILED)%'
       # sync: 'sync://'
-      # sync: '%env(MESSENGER_TRANSPORT_DSN_SEND_WELCOME_MAIL)%'
+      #sync: '%env(MESSENGER_TRANSPORT_DSN_SEND_WELCOME_MAIL)%'
+      async:
+        dsn: '%env(MESSENGER_TRANSPORT_DSN_SEND_WELCOME_MAIL)%'
+        retry_strategy:
+          max_retries: 3
 
     routing:
       # Route your messages to the transports
