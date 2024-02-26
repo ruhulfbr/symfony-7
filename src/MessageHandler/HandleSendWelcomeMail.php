@@ -32,9 +32,9 @@ class HandleSendWelcomeMail
 
             if ($sent) {
                 print_r("Email Successfully Sent." . PHP_EOL);
-                $this->logger->info("Email Successfully Sent." . PHP_EOL);
+                $this->logger->info("Send Welcome Email: Email Successfully Sent." . PHP_EOL);
                 return;
-                
+
             } else {
                 $retryCount++;
             }
