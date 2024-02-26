@@ -1,0 +1,44 @@
+RabbitMQ Needy Command
+-----------------------
+sudo systemctl start rabbitmq-server
+sudo systemctl stop rabbitmq-server
+
+php bin/console messenger:consume sendWelcomMail
+php bin/console messenger:consume deleteuser
+
+
+
+Supervisor
+-----------------------------------------------------------
+sudo apt-get install supervisor
+
+Create Config
+--------------
+sudo nano /etc/supervisor/conf.d
+
+Update Config
+--------------
+sudo nano /etc/supervisor/conf.d/messenger-worker.conf
+
+
+Config File info
+-----------------
+;/etc/supervisor/conf.d/messenger-worker.conf
+[program:messenger-consume]
+command=/usr/bin/php /opt/lampp/htdocs/projects/symphony-app/bin/console messenger:consume async --time-limit=3600
+;user=ubuntu
+numprocs=2
+startsecs=0
+autostart=true
+autorestart=true
+startretries=10
+process_name=%(program_name)s_%(process_num)02d
+
+
+Commands
+---------
+sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl start messenger-consume:*
+sudo supervisorctl restart messenger-consume:*
+sudo supervisorctl stop messenger-consume:*

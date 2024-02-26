@@ -5,15 +5,18 @@ framework:
 
     transports:
       # https://symfony.com/doc/current/messenger.html#transport-configuration
-      sendWelcomMail: '%env(MESSENGER_TRANSPORT_DSN)%'
-      deleteuser: '%env(MESSENGER_TRANSPORT_DSN2)%'
+      async: '%env(MESSENGER_TRANSPORT_DSN_SEND_WELCOME_MAIL)%'
+      # deleteuser: '%env(MESSENGER_TRANSPORT_DSN_DELETE_USER)%'
       # failed: 'doctrine://default?queue_name=failed'
       # sync: 'sync://'
+      # sync: '%env(MESSENGER_TRANSPORT_DSN_SEND_WELCOME_MAIL)%'
 
     routing:
       # Route your messages to the transports
-      'App\Message\SendWelcomeEmail': sendWelcomMail
-      'App\Message\DeleteUser': deleteuser
+      'App\Message\SendWelcomeEmail': async
+      'App\Message\DeleteUser': async
+      # 'App\Message\SendWelcomeEmail': sync
+      # 'App\Message\DeleteUser': sync
 
 # when@test:
 #    framework:
