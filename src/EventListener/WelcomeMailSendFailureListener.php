@@ -10,11 +10,9 @@ use Symfony\Component\Messenger\Event\WorkerMessageFailedEvent;
 
 class WelcomeMailSendFailureListener
 {
-    private $logger;
-
-    public function __construct(LoggerInterface $logger)
+    public function __construct(private readonly LoggerInterface $logger)
     {
-        $this->logger = $logger;
+
     }
 
     public function onMailSendFailed(WorkerMessageFailedEvent $event): void

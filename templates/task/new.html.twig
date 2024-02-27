@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block body %}
+
+    <style>
+        label.required:after {
+            content: " *";
+            color: darkred;
+        }
+    </style>
+
+    <div class="example-wrapper">
+        <h1>{{ title }}! ✅</h1>
+
+        {{ form(form) }}
+        {#        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }} #}
+        {#        {{ form_widget(form) }} #}
+        {#        {{ form_end(form) }} #}
+    </div>
+{% endblock %}

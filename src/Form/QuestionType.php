@@ -17,10 +17,9 @@ class QuestionType extends AbstractType
             ->add('title')
             ->add('tags', EntityType::class, [
                 'class' => Tag::class,
-'choice_label' => 'id',
-'multiple' => true,
-            ])
-        ;
+                'choice_label' => 'id',
+                'multiple' => true,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
