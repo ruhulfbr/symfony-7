@@ -5,8 +5,8 @@ namespace App\Entity;
 use App\Repository\TaskRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
@@ -54,13 +54,19 @@ class Task
 
     public static function loadValidatorMetadata(ClassMetadata $metadata): void
     {
-        $metadata->addPropertyConstraint('task', new NotBlank());
+        $metadata->addConstraint(new UniqueEntity([
+            'fields' => 'task',
+        ]));
 
-        $metadata->addPropertyConstraint('due_date', new NotBlank());
-        $metadata->addPropertyConstraint(
-            'due_date',
-            new Type(\DateTime::class)
+        $metadata->addPropertyConstraints('task', [
+            new Assert\NotBlank(),
+            new Assert\Type(['type' => 'string']),
+            new Assert\Length(['min' => 10, 'max' => 100])
+        ]);
 
-        );
+        $metadata->addPropertyConstraints('due_date', [
+            new Assert\NotBlank(),
+            new Assert\Type(\DateTimeInterface::class)
+        ]);
     }
 }
