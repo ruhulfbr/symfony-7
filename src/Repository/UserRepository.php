@@ -17,12 +17,13 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class UserRepository extends ServiceEntityRepository
 {
-    private $entityManager;
-
-    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
+    public function __construct(
+        ManagerRegistry                         $registry,
+        private readonly EntityManagerInterface $entityManager,
+    )
     {
         parent::__construct($registry, User::class);
-        $this->entityManager = $entityManager;
+
     }
 
     public function create(User $user): void

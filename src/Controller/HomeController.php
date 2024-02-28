@@ -1,5 +1,5 @@
 <?php
-// src/Controller/LuckyController.php
+// src/Controller/HomeController.php
 namespace App\Controller;
 
 use Psr\Log\LoggerInterface;
@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class HomeController extends AbstractController
 {
-    private $_VIEW_PATH = "dashboard/";
+    private string $_VIEW_PATH = "dashboard/";
 
     public function index(): Response
     {
