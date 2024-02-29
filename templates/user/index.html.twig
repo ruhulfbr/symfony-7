@@ -19,7 +19,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for user in users %}
+        {% for user in paginator.items %}
             <tr>
                 <td>{{ user.id }}</td>
                 <td>{{ user.name }}</td>
@@ -37,6 +37,8 @@
         {% endfor %}
         </tbody>
     </table>
+
+    {% include 'utils/paginator.html.twig' %}
 
     <a href="{{ path('app_user_new') }}">Create new</a>
 {% endblock %}

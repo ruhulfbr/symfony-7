@@ -6,6 +6,8 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -24,6 +26,19 @@ class UserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, User::class);
 
+    }
+
+    public function getAllUsersQuery(): Query|QueryBuilder
+    {
+        return $this->createQueryBuilder('u')->getQuery();
+    }
+
+    public function findActiveUsersQuery(): Query|QueryBuilder
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.isActive = :isActive')
+            ->setParameter('isActive', true)
+            ->getQuery();
     }
 
     public function create(User $user): void

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Utils\Paginator;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
@@ -36,10 +37,20 @@ class UserController extends AbstractController
     }
 
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
-    public function index(): Response
+    public function index(Request $request, Paginator $paginator): Response
     {
+//        $paginator = $this->userRepository->findAll();
+
+        $query = $this->userRepository->getAllUsersQuery();
+        $paginator->paginate($query, $request->query->getInt('page', 1), 10);
+
+        echo $query->getSQL();
+        exit();
+// Show Parameters:
+//        echo $query->getParameters();
+
         return $this->render('user/index.html.twig', [
-            'users' => $this->userRepository->findAll(),
+            'paginator' => $paginator,
         ]);
     }
 
