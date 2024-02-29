@@ -39,15 +39,13 @@ class UserController extends AbstractController
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function index(Request $request, Paginator $paginator): Response
     {
-//        $paginator = $this->userRepository->findAll();
+        // $users = $this->userRepository->findAll();
 
         $query = $this->userRepository->getAllUsersQuery();
         $paginator->paginate($query, $request->query->getInt('page', 1), 10);
 
-        echo $query->getSQL();
-        exit();
-// Show Parameters:
-//        echo $query->getParameters();
+        // echo $query->getSQL(); exit();
+        // echo $query->getParameters(); exit();
 
         return $this->render('user/index.html.twig', [
             'paginator' => $paginator,
@@ -62,10 +60,9 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $plaintextPassword = $user->getPassword(); // Assuming you have a method to retrieve the plain text password from the user entity
+            $plaintextPassword = $user->getPassword();
             $hashedPassword = $passwordHasher->hashPassword($user, $plaintextPassword);
             $user->setPassword($hashedPassword);
-
 
             // Use the repository to save the user entity
             $this->userRepository->create($user);

@@ -47,11 +47,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    public function number(
-        #[MapQueryParameter] string $firstName,
-        #[MapQueryParameter] string $lastName,
-        #[MapQueryParameter] int    $age
-    ): Response
+    public function number(): Response
     {
         $number = random_int(100, 1000);
 

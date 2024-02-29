@@ -13,6 +13,11 @@ class LoginController extends AbstractController
     #[Route('/login', name: 'app_login')]
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
+        if ($this->getUser()) {
+            $this->addFlash('error', 'You are already logged in');
+            return $this->redirectToRoute('app_user_index');
+        }
+
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
@@ -27,6 +32,7 @@ class LoginController extends AbstractController
     #[Route('/logout', name: 'app_logout')]
     public function logout(Security $security): void
     {
+        $this->addFlash('success', 'Successfully logged out.');
         // logout the user in on the current firewall
         $response = $security->logout(false);
 
