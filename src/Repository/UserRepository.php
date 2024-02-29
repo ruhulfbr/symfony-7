@@ -30,7 +30,7 @@ class UserRepository extends ServiceEntityRepository
 
     public function getAllUsersQuery(): Query|QueryBuilder
     {
-        return $this->createQueryBuilder('u')->getQuery();
+        return $this->createQueryBuilder('u')->orderBy('u.id', 'desc')->getQuery();
     }
 
     public function findActiveUsersQuery(): Query|QueryBuilder

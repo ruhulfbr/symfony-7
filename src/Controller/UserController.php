@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\UserEditType;
 use App\Utils\Paginator;
 use App\Entity\User;
 use App\Form\UserType;
@@ -21,19 +22,15 @@ use App\Event\EntityUpdatedEvent;
 #[Route('/user')]
 class UserController extends AbstractController
 {
-    protected EventDispatcherInterface $eventDispatcher;
-    protected EntityManagerInterface $entityManager;
-    protected UserRepository $userRepository;
 
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        EntityManagerInterface   $entityManager,
-        UserRepository           $userRepository
+        protected EventDispatcherInterface    $eventDispatcher,
+        protected EntityManagerInterface      $entityManager,
+        protected UserRepository              $userRepository,
+        protected UserPasswordHasherInterface $passwordHasher
     )
     {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->entityManager = $entityManager;
-        $this->userRepository = $userRepository;
+
     }
 
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
@@ -53,7 +50,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, UserPasswordHasherInterface $passwordHasher): Response
+    public function new(Request $request): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -61,7 +58,7 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $plaintextPassword = $user->getPassword();
-            $hashedPassword = $passwordHasher->hashPassword($user, $plaintextPassword);
+            $hashedPassword = $this->passwordHasher->hashPassword($user, $plaintextPassword);
             $user->setPassword($hashedPassword);
 
             // Use the repository to save the user entity
@@ -91,10 +88,18 @@ class UserController extends AbstractController
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user): Response
     {
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserEditType::class, $user);
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
+            if (!empty($request->request->all('user_edit')['password']['first'])) {
+                $plaintextPassword = $request->request->all('user_edit')['password']['first'];
+                $hashedPassword = $this->passwordHasher->hashPassword($user, $plaintextPassword);
+                $user->setPassword($hashedPassword);
+            } else {
+                $user->setPassword($user->getPassword());
+            }
+
             // Get dirty dta
             $entityUnitOfWork = $this->entityManager->getUnitOfWork();
             $entityUnitOfWork->computeChangeSets();

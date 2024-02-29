@@ -6,10 +6,9 @@ use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -42,21 +41,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $metadata->addConstraint(new UniqueEntity([
             'fields' => 'email',
         ]));
-
-        $metadata->addPropertyConstraints('name', [
-            new Assert\NotBlank(),
-            new Assert\Type(['type' => 'string']),
-            new Assert\Length(['min' => 2, 'max' => 100])
-        ]);
-        $metadata->addPropertyConstraints('email', [
-            new Assert\NotBlank(),
-            new Assert\Email()
-        ]);
-        $metadata->addPropertyConstraints('password', [
-            new Assert\NotBlank(),
-            new Assert\Type(['type' => 'string']),
-            new Assert\Length(['min' => 6, 'max' => 30])
-        ]);
     }
 
     public function getId(): ?int
@@ -127,9 +111,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(string|null $password): static
     {
-        $this->password = $password;
+        if ($password) {
+            $this->password = $password;
+        }
 
         return $this;
     }
@@ -151,6 +137,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles = $roles;
 
         return $this;
+    }
+
+    public function getRolesAsString(): string
+    {
+        $choices = [
+            'ROLE_ADMIN' => 'Admin',
+            'ROLE_USER' => 'User'
+        ];
+
+        return implode(', ', array_map(static function ($role) use ($choices) {
+            return $choices[$role] ?? null;
+        }, $this->roles));
     }
 
     /**

@@ -12,8 +12,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class UserType extends AbstractType
+class UserEditType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -36,12 +37,12 @@ class UserType extends AbstractType
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'The password fields must match.',
-                'required' => true,
+                'required' => false,
                 'first_options' => ['label' => 'Password'],
                 'second_options' => ['label' => 'Repeat Password'],
                 'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\Length(['min' => 6, 'max' => 30])
+                    // If password is provided, validate it
+                    new Assert\Callback([$this, 'validatePassword']),
                 ],
             ])
             ->add('roles', ChoiceType::class, [
@@ -53,6 +54,22 @@ class UserType extends AbstractType
                 'multiple' => true,
                 'required' => true
             ]);
+    }
+
+    public function validatePassword($value, ExecutionContextInterface $context): void
+    {
+        // Get the submitted data
+        $formData = $context->getRoot()->getData();
+
+        // Check if password is provided
+        if (!empty($value)) {
+            // Validate length
+            if (strlen($value) < 6 || strlen($value) > 30) {
+                $context->buildViolation('Password must be between 6 and 30 characters long.')
+                    ->atPath('password')
+                    ->addViolation();
+            }
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
