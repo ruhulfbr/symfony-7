@@ -5,7 +5,18 @@
 {% block body %}
     <h1>Edit User</h1>
 
-    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ form_start(form) }}
+
+    {{ form_row(form.name) }}
+    {{ form_row(form.email) }}
+
+    <div class="mb-3">
+        {{ form_label(form.password.first, 'Password', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.password.first, {'attr': {'class': 'form-control'}, 'id': 'user_edit_password_first'}) }}
+        <small class="text-warning fst-italic">Note:: Leave blank if you do not want to change the password.</small>
+    </div>
+
+    {{ form_end(form) }}
 
     <a href="{{ path('app_user_index') }}">back to list</a>
 
