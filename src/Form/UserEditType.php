@@ -38,11 +38,17 @@ class UserEditType extends AbstractType
                 'type' => PasswordType::class,
                 'invalid_message' => 'The password fields must match.',
                 'required' => false,
-                'first_options' => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password'],
+                'mapped' => false, // This field is not mapped to the entity
                 'constraints' => [
-                    // If password is provided, validate it
-                    new Assert\Callback([$this, 'validatePassword']),
+                    new Assert\Length(['min' => 6, 'max' => 30]),
+                ],
+                'first_options' => [
+                    'label' => 'Password',
+                    'required' => false,
+                ],
+                'second_options' => [
+                    'label' => 'Repeat Password',
+                    'required' => false,
                 ],
             ])
             ->add('roles', ChoiceType::class, [
