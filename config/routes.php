@@ -6,8 +6,8 @@ use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return function (RoutingConfigurator $routes): void {
     $routes->add('dashboard', '/')
-            ->controller([HomeController::class, 'index'])
-            ->methods(['GET', 'HEAD']);
+        ->controller([HomeController::class, 'index'])
+        ->methods(['GET', 'HEAD']);
 
     $routes->add('home', '/home')
         ->controller([HomeController::class, 'number'])
