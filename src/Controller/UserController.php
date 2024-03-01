@@ -90,14 +90,12 @@ class UserController extends AbstractController
     {
         $form = $this->createForm(UserEditType::class, $user);
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!empty($request->request->all('user_edit')['password']['first'])) {
-                $plaintextPassword = $request->request->all('user_edit')['password']['first'];
+            $plaintextPassword = $form->get('password')->getData();
+            if (!empty($plaintextPassword)) {
                 $hashedPassword = $this->passwordHasher->hashPassword($user, $plaintextPassword);
                 $user->setPassword($hashedPassword);
-            } else {
-                $user->setPassword($user->getPassword());
             }
 
             // Get dirty dta

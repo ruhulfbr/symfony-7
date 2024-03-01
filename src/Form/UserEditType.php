@@ -60,7 +60,6 @@ class UserEditType extends AbstractType
     {
         // Get the submitted data
         $formData = $context->getRoot()->getData();
-
         // Check if password is provided
         if (!empty($value)) {
             // Validate length

@@ -43,7 +43,7 @@ security:
     ROLE_SUPER_ADMIN: [ ROLE_ADMIN ]
 
   access_control:
-    - { path: ^/login, roles: PUBLIC_ACCESS }
+    - { path: ^/auth, roles: PUBLIC_ACCESS }
     - { path: ^/user, roles: ROLE_ADMIN }
     - { path: ^/, roles: ROLE_USER }
     #- { path: ^/login, roles: PUBLIC_ACCESS }
