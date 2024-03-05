@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use App\Service\CSVReader;
 
 
 class HomeController extends AbstractController
@@ -47,7 +48,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    public function number(): Response
+    public function number(CSVReader $CSVReader): Response
     {
         $number = random_int(100, 1000);
 

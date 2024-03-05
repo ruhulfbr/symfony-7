@@ -15,6 +15,10 @@
         {{ form_widget(form.password.first, {'attr': {'class': 'form-control'}, 'id': 'user_edit_password_first'}) }}
         <small class="text-warning fst-italic">Note:: Leave blank if you do not want to change the password.</small>
     </div>
+    {{ form_row(form.password.second) }}
+    {{ form_row(form.roles) }}
+    <button class="btn">{{ button_label|default('Update') }}</button>
+
 
     {{ form_end(form) }}
 
