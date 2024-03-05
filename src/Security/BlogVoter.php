@@ -4,6 +4,7 @@ namespace App\Security;
 
 use App\Entity\Blog;
 use App\Entity\User;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -12,8 +13,12 @@ class BlogVoter extends Voter
     // these strings are just invented: you can use anything
     const VIEW = 'view';
     const EDIT = 'edit';
-
     const DELETE = 'delete';
+
+    public function __construct(private readonly Security $security)
+    {
+
+    }
 
     protected function supports(string $attribute, mixed $subject): bool
     {
@@ -37,6 +42,11 @@ class BlogVoter extends Voter
         if (!$user instanceof User) {
             // the user must be logged in; if not, deny access
             return false;
+        }
+
+        // ROLE_SUPER_ADMIN can do anything! The power!
+        if ($this->security->isGranted('ROLE_ADMIN')) {
+            return true;
         }
 
         // you know $subject is a Post object, thanks to `supports()`

@@ -18,7 +18,11 @@ class BlogController extends AbstractController
     #[Route('/', name: 'app_blog_index', methods: ['GET'])]
     public function index(BlogRepository $blogRepository): Response
     {
-        $posts = $blogRepository->findBy(['user' => $this->getUser()]);
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $posts = $blogRepository->findAll();
+        } else {
+            $posts = $blogRepository->findBy(['user' => $this->getUser()]);
+        }
 
         return $this->render('blog/index.html.twig', [
             'blogs' => $posts,
