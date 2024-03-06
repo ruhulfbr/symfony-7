@@ -9,38 +9,28 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use App\Service\CSVReader;
+use App\Service\Php8;
 
 
 class HomeController extends AbstractController
 {
     private string $_VIEW_PATH = "dashboard/";
 
+    public function __construct(private readonly Php8 $php8)
+    {
+
+    }
+
     public function index(): Response
     {
+
+        $result = $this->php8->index();
+
+        echo "<pre>";
+        print_r($result);
+        exit();
+
         $number = random_int(100, 1000);
-
-//        return $this->redirect('http://symfony.com/doc');
-
-//        return $this->redirectToRoute('base.home', ['page' => 89]);
-
-//        $response = $this->sendEarlyHints([
-//            new Link(rel: 'preconnect', href: 'https://fonts.google.com'),
-//            (new Link(href: '/style.css'))->withAttribute('as', 'stylesheet'),
-//            (new Link(href: '/script.js'))->withAttribute('as', 'script'),
-//        ]);
-//
-//        return $this->file('public/csv/sample-csv-100k.csv');
-//
-//        return $this->json(['username' => 'jane.doe']);
-
-
-//        $contents = $this->render($this->_VIEW_PATH.'index.html.twig', [
-//            'number' => $number,
-//            'page'   => 'Dashboard'
-//        ]);
-//
-//        echo $contents;
-
 
         return $this->render($this->_VIEW_PATH . 'index.html.twig', [
             'number' => $number,
