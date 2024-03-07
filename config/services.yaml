@@ -59,6 +59,9 @@ services:
   App\Service\Php8:
     arguments: [ ]
 
+  App\Service\Php81:
+    arguments: [ ]
+
 
   # add more service definitions when explicit configuration is needed
   # please note that last definitions always *replace* previous ones

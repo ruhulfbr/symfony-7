@@ -14,6 +14,8 @@ class Php8
 
     public function index(): void
     {
+        echo "<h1> Practicing PHP8 </h1>" . PHP_EOL;
+
         $this->getResourceId();
         $this->getDebugType();
         $this->pregLastErrorMsg();
@@ -24,12 +26,12 @@ class Php8
         $this->checkAttribute();
         $this->matchExpression(5);
         $this->matchExpression('2');
+        $this->matchExpression('99995255');
         $this->namedArgs(value2: "value2", value: "value");
         $this->unionTypes(2);
         $this->unionTypes('ami');
         $this->arrayNegetiveIndex();
     }
-
 
     public function getResourceId(): mixed
     {
@@ -138,6 +140,7 @@ class Php8
             'four' => 4444,
             5 => 5555,
             6 => 6666,
+            default => 'unknown',
         };
 
         var_dump($statusText);
@@ -165,5 +168,11 @@ class Php8
         echo "<pre> Negetive Index " . PHP_EOL;
         $a = array_fill(-5, 4, true);
         var_dump($a);
+    }
+
+    #[HasAccess(HasAccess::PRIVATE)]
+    private function myPrivate(int|string $value = 23): int|string
+    {
+        return "Hello world2 " . $value;
     }
 }
