@@ -112,5 +112,4 @@ class UserType extends AbstractType
                 ->addViolation();
         }
     }
-    
 }
