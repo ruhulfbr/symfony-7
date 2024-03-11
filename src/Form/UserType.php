@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class UserType extends AbstractType
 {
@@ -58,7 +59,58 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class
+            'data_class' => User::class,
+            'constraints' => [
+                new Assert\Callback([$this, 'validateUserData'])
+            ]
         ]);
     }
+
+    public function validateUserData($user, ExecutionContextInterface $context): void
+    {
+        $this->validateNameLength($user, $context);
+        $this->validateEmailLength($user, $context);
+    }
+
+    private function validateNameLength($user, ExecutionContextInterface $context): void
+    {
+        $name = $user->getName();
+        if (!$name) {
+            return;
+        }
+
+        if (strlen($name) < 5) {
+            $context->buildViolation('The name field must be at least 5 characters long.')
+                ->atPath('name')
+                ->addViolation();
+        }
+
+        if (strlen($name) > 10) {
+            $context->buildViolation('The name field must be smaller than 10 characters.')
+                ->atPath('name')
+                ->addViolation();
+        }
+    }
+
+    private function validateEmailLength($user, ExecutionContextInterface $context): void
+    {
+        $email = $user->getEmail();
+        if (!$email) {
+            return;
+        }
+
+        // Split email address into username and domain
+        [$username, $domain] = explode('@', $email);
+
+        if ($domain === 'gmail.com' && strlen($username) < 10) {
+            $context->buildViolation('For Gmail addresses, the username must be at least 10 characters long.')
+                ->atPath('email')
+                ->addViolation();
+        } elseif (strlen($email) < 20) {
+            $context->buildViolation('For non-Gmail addresses, the email must be at least 20 characters long.')
+                ->atPath('email')
+                ->addViolation();
+        }
+    }
+    
 }
