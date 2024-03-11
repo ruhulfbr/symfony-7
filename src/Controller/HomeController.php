@@ -2,7 +2,6 @@
 // src/Controller/HomeController.php
 namespace App\Controller;
 
-use App\Service\Php81;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,15 +11,38 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use App\Service\CSVReader;
 use App\Service\Php8;
+use App\Service\Php81;
+use App\Service\Php82;
 
 
 class HomeController extends AbstractController
 {
     private string $_VIEW_PATH = "dashboard/";
 
-    public function __construct(private readonly Php8 $php8, private readonly Php81 $php81)
+    public function __construct(
+        private readonly Php8  $php8,
+        private readonly Php81 $php81,
+        private readonly Php82 $php82)
     {
 
+    }
+
+    #[Route('/php82', 'app_php82')]
+    public function php82(): Response
+    {
+
+        $result = $this->php82->index();
+
+        echo "<pre>";
+        print_r($result);
+        exit();
+
+        $number = random_int(100, 1000);
+
+        return $this->render($this->_VIEW_PATH . 'index.html.twig', [
+            'number' => $number,
+            'page' => 'Dashboard'
+        ]);
     }
 
     #[Route('/php81', 'app_php81')]

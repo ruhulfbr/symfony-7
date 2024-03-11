@@ -7,7 +7,6 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\closure;
 
 class Php81
 {
-    //PHP 8.0, you can override class constants with its child classes, but if you use final keyword before const then it can not be overridden.
     final const HELLO = 'hello';
 
     public function __construct()
