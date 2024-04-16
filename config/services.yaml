@@ -24,6 +24,10 @@ services:
     tags:
       - { name: 'kernel.event_listener', event: 'product.created', method: 'onProductCreated' }
 
+  #  App\EventListener\SearchIndexer:
+  #    tags:
+  #      - { name: 'doctrine.event_listener', event: 'postPersist', priority: 500, connection: 'default' }
+
   App\EventListener\ProductUpdatedListener:
     tags:
       - { name: 'kernel.event_listener', event: 'product.updated', method: 'onProductUpdated' }
@@ -51,6 +55,10 @@ services:
   App\EventSubscriber\EntityAuditedSubscriber:
     tags:
       - { name: 'kernel.event_listener' }
+
+  App\EventObserver\ProductObserver:
+    tags:
+      - { name: 'doctrine.event_subscriber' }
 
   App\Service\CSVReader:
     arguments:

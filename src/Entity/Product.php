@@ -7,8 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Product
 {
     #[ORM\Id]
@@ -33,6 +35,12 @@ class Product
 
     #[ORM\ManyToOne(inversedBy: 'products')]
     private ?Category $category = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $unique_id = null;
 
 
     public function __construct()
@@ -127,6 +135,44 @@ class Product
 
         // $changeset will contain the changes made to the entity
         // before it's updated
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setSlugValue(): void
+    {
+        $slugger = new AsciiSlugger();
+
+        $this->slug = $slugger->slug($this->getName());
+    }
+
+    public function getUniqueId(): ?string
+    {
+        return $this->unique_id;
+    }
+
+    public function setUniqueId(?string $unique_id): static
+    {
+        $this->unique_id = $unique_id;
+
+        return $this;
+    }
+
+    #[ORM\PostPersist]
+    public function setUniqueIdValue(): void
+    {
+        $this->unique_id = "MYP-" . $this->getId();
     }
 
 }
