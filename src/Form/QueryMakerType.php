@@ -34,7 +34,6 @@ class QueryMakerType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\File([
-                        'maxSize' => '1024k',
                         'extensions' => [
                             'csv',
                         ],
