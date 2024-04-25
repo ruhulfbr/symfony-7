@@ -32,23 +32,16 @@ class QueryMakerType extends AbstractType
                 'mapped' => false,
                 'attr' => ['accept' => '.csv'],
                 'constraints' => [
-                    new Assert\NotBlank()
+                    new Assert\NotBlank(),
+                    new Assert\File([
+                        'maxSize' => '1024k',
+                        'extensions' => [
+                            'csv',
+                        ],
+                        'extensionsMessage' => 'Please upload a valid CSV file',
+                    ])
                 ]
-            ])
-//            ->add('view_as', ChoiceType::class, [
-//                'label' => 'Choose View As',
-//                'choices' => [
-//                    'View as Text' => 'view_as_text',
-//                    'Download as Text File' => 'download_text_file',
-//                    'Download as SQL File' => 'download_sql_file'
-//                ],
-//                'data' => 'view_as_text',
-//                'mapped' => false,
-//                'expanded' => true,
-//                'multiple' => false,
-//
-//            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
