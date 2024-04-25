@@ -5,9 +5,8 @@
 {% block body %}
 
     <style>
-        .scroll {
-            max-height: 100px;
-            overflow-y: auto;
+        .query_span {
+            font-size: 15px;
         }
     </style>
 
@@ -26,8 +25,10 @@
                 <button class="btn btn-sm btn-success" onclick="downloadAsFile('.sql')">Download as SQL</button>
                 <a class="btn btn-sm btn-secondary" href="{{ path('query_maker') }}">Generate Again</a>
             </div>
-            <div class="card-body scroll" style="max-height: 600px;">
-                <pre id="query_data" class="mb-0 pb-2">{{ query_data }}</pre>
+            <div class="card-body overflow-scroll overflow-x-hidden" style="max-height: 500px;">
+                <span class="query_span pre" id="query_data">
+                    {{ query_data|nl2br }}
+                </span>
             </div>
         </div>
 
