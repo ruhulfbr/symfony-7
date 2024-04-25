@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\QueryMakerCSV;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -40,7 +41,12 @@ class QueryMakerType extends AbstractType
                         'extensionsMessage' => 'Please upload a valid CSV file',
                     ])
                 ]
-            ]);
+            ])
+            ->add('create_query', CheckboxType::class, [
+                'label' => 'Want to Generate Create Query?',
+                'mapped' => false,
+                'required' => false, // If the field is optional
+            ]);;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

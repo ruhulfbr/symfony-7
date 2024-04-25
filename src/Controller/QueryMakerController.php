@@ -22,6 +22,7 @@ class QueryMakerController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $tableName = $form->get('table_name')->getData();
+            $create_query = $form->get('create_query')->getData();
             $csvFile = $form->get('csvFile')->getData();
             $csvData = $this->extractCSVData($csvFile);
 
@@ -36,7 +37,7 @@ class QueryMakerController extends AbstractController
 
             if (empty($error)) {
                 $message = "Query generated successfully";
-                $queryData = $this->generateQuery($tableName, $csvData);
+                $queryData = $this->generateQuery($tableName, $csvData, $create_query);
             } else {
                 $message = $error;
                 $queryData = "";
@@ -44,7 +45,7 @@ class QueryMakerController extends AbstractController
 
             return $this->render('query_maker/query.html.twig', [
                 'message' => $message,
-                'table_name' => $tableName,
+                'table_name' => $this->validateString($tableName),
                 'query_data' => $queryData
             ]);
         }
@@ -55,23 +56,73 @@ class QueryMakerController extends AbstractController
         ]);
     }
 
-    private function generateQuery(string $tableName, array $data): string
+    private function generateQuery(string $tableName, array $data, string $create_query): string
     {
         $tableName = $this->validateString($tableName);
-        $columns = $this->validateColumns($data['columns']);
+        $data['columns'] = $this->validateColumns($data['columns']);
+        $hasId = true;
+
+        // Add 'id' column if not already present in the $columns array
+        if (!in_array('id', $data['columns'])) {
+            $hasId = false;
+            array_unshift($data['columns'], 'id');
+        }
+
+        $query = $this->generateDataQuery($tableName, $data, $hasId);
+
+        if (!empty($create_query) && $create_query == 1) {
+            $create_query = $this->generateCreateQuery($tableName, $data['columns']);
+            $query = $create_query . PHP_EOL . PHP_EOL . $query;
+        }
+
+        return $query;
+    }
+
+    private function generateCreateQuery(string $tableName, array $columns): string
+    {
+        $query = "CREATE TABLE IF NOT EXISTS `$tableName` (" . PHP_EOL;
+
+        foreach ($columns as $column) {
+            if ($column == 'id') {
+                $query .= " `id` int(11) NOT NULL AUTO_INCREMENT, " . PHP_EOL;
+                continue;
+            }
+
+            if (str_contains($column, 'date')) {
+                $query .= " `$column` DATETIME DEFAULT NULL, " . PHP_EOL;
+            } else {
+                $query .= " `$column` VARCHAR(255) DEFAULT NULL, " . PHP_EOL;
+            }
+        }
+
+        $query .= " PRIMARY KEY (`id`)" . PHP_EOL . ");";
+
+        return $query;
+    }
+
+    private function generateDataQuery(string $tableName, array $data, bool $hasId): string
+    {
+        $columns = $data['columns'];
         $rows = $data['rows'];
 
-        $columnNameString = implode(', ', $columns);
+        $columnNameString = implode(', ', array_map(function ($column) {
+            return "`$column`";
+        }, $columns));
 
         $insertQueries = [];
         foreach ($rows as $row) {
             $values = [];
+
+            if (!$hasId) {
+                $values[] = "NULL";
+            }
+
             foreach ($row as $value) {
                 // Escape each value to prevent SQL injection
                 $values[] = "'" . addslashes($value) . "'";
             }
             $insertValues = '(' . implode(', ', $values) . ')';
-            $insertQueries[] = "INSERT INTO " . $tableName . " ($columnNameString) VALUES $insertValues;";
+            $insertQueries[] = "INSERT INTO `$tableName` ($columnNameString) VALUES $insertValues;";
         }
 
         return implode(PHP_EOL, $insertQueries);
@@ -117,4 +168,5 @@ class QueryMakerController extends AbstractController
 
         return ['columns' => $columns, 'rows' => $rows];
     }
+
 }
