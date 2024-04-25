@@ -1,7 +1,6 @@
 <?php
 
 // src/EventListener/WelcomeMailSendFailureListener.php
-
 namespace App\EventListener;
 
 use App\Message\SendWelcomeEmail;

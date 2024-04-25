@@ -15,6 +15,8 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Event\PostUpdateEventArgs;
 use Doctrine\ORM\Event\PreRemoveEventArgs;
 use Doctrine\ORM\Event\PostRemoveEventArgs;
+use Doctrine\ORM\Event\PostLoadEventArgs;
+
 use Psr\Log\LoggerInterface;
 
 class ProductObserver implements EventSubscriber

@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Generate Query from CSV {% endblock %}
+
+{% block body %}
+
+    <style>
+        .scroll {
+            max-height: 100px;
+            overflow-y: auto;
+        }
+    </style>
+
+    <div class="alert alert-info">
+        {{ message }}
+    </div>
+
+    {% if query_data %}
+
+        <input type="hidden" id="table_name" value="{{ table_name }}">
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <button class="btn btn-sm btn-info" onclick="copyText()">Copy as Text</button>
+                <button class="btn btn-sm btn-dark" onclick="downloadAsFile('.txt')">Download as Text</button>
+                <button class="btn btn-sm btn-success" onclick="downloadAsFile('.sql')">Download as SQL</button>
+                <a class="btn btn-sm btn-secondary" href="{{ path('query_maker') }}">Generate Again</a>
+            </div>
+            <div class="card-body scroll" style="max-height: 600px;">
+                <pre id="query_data" class="mb-0 pb-2">{{ query_data }}</pre>
+            </div>
+        </div>
+
+    {% endif %}
+
+    <script>
+        function copyText() {
+            var text = document.getElementById("query_data").innerText;
+
+            navigator.clipboard.writeText(text)
+                .then(() => {
+                    console.log('Text copied to clipboard');
+                    alert('Text copied to clipboard');
+                })
+                .catch(err => {
+                    console.error('Failed to copy text: ', err);
+                    alert('Failed to copy text');
+                });
+        }
+
+        function downloadAsFile(ext = ".txt") {
+            // Content to be written in the text file
+            var query_text = document.getElementById("query_data").innerText;
+            let table_name = document.getElementById("table_name").value;
+
+            // Create a Blob object containing the text content
+            var blob = new Blob([query_text], {type: "text/plain"});
+
+            // Create a link element to trigger the download
+            var a = document.createElement("a");
+            a.href = window.URL.createObjectURL(blob);
+            a.download = table_name + ext;
+
+            // Append the link to the body and trigger the download
+            document.body.appendChild(a);
+            a.click();
+
+            // Clean up by removing the link
+            document.body.removeChild(a);
+        }
+    </script>
+
+{% endblock %}

@@ -1,19 +1,18 @@
 <?php
+
 // src/Controller/HomeController.php
 namespace App\Controller;
 
-use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
-use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use App\Service\CSVReader;
 use App\Service\Php8;
 use App\Service\Php81;
 use App\Service\Php82;
-
+use Psr\Log\LoggerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class HomeController extends AbstractController
 {
@@ -22,7 +21,8 @@ class HomeController extends AbstractController
     public function __construct(
         private readonly Php8  $php8,
         private readonly Php81 $php81,
-        private readonly Php82 $php82)
+        private readonly Php82 $php82
+    )
     {
 
     }
@@ -65,7 +65,6 @@ class HomeController extends AbstractController
 
     public function index(): Response
     {
-
         $result = $this->php8->index();
 
         echo "<pre>";
@@ -92,15 +91,15 @@ class HomeController extends AbstractController
 
     public function pageCheck(Request $request, int $page, LoggerInterface $logger): Response
     {
-//        $routeName = $request->attributes->get('_route');
-//        $routeParameters = $request->attributes->get('_route_params');
-//        $allAttributes = $request->attributes->all();
-//        echo "<pre>";
-//        print_r($allAttributes);
-//        exit();
+        // $routeName = $request->attributes->get('_route');
+        // $routeParameters = $request->attributes->get('_route_params');
+        // $allAttributes = $request->attributes->all();
+        // echo "<pre>";
+        // print_r($allAttributes);
+        // exit();
 
         echo $this->generateUrl('base.home', ['page' => '20']);
-//        exit();
+        // exit();
 
         echo "<br>";
 

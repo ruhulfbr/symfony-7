@@ -2,10 +2,15 @@
 
 // config/routes.php
 use App\Controller\HomeController;
+use App\Controller\QueryMakerController;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return function (RoutingConfigurator $routes): void {
-    $routes->add('dashboard', '/')
+    $routes->add('query_maker', '/')
+        ->controller([QueryMakerController::class, 'index'])
+        ->methods(['GET', 'POST', 'HEAD']);
+
+    $routes->add('dashboard', '/home2')
         ->controller([HomeController::class, 'index'])
         ->methods(['GET', 'HEAD']);
 
@@ -13,11 +18,11 @@ return function (RoutingConfigurator $routes): void {
         ->controller([HomeController::class, 'number'])
         ->methods(['GET', 'HEAD']);
 
-//    $routes->add('base.home', '/base/{page}')
-//        ->controller([HomeController::class, 'pageCheck'])
-//        ->methods(['GET', 'HEAD'])
-//        ->defaults(['page' => 1])
-//        ->requirements(['page' => '\d+']);
+    //    $routes->add('base.home', '/base/{page}')
+    //        ->controller([HomeController::class, 'pageCheck'])
+    //        ->methods(['GET', 'HEAD'])
+    //        ->defaults(['page' => 1])
+    //        ->requirements(['page' => '\d+']);
 
 //    This is similer to prev routes
     $routes->add('base.home', '/base/{page<\d+>?1}')
