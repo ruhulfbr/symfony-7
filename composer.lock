@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dc24b9d5ed65a187cdde3ebc3d96d97a",
+    "content-hash": "d8b716f079617b5c65618e0cbadad913",
     "packages": [
         {
             "name": "composer/semver",
@@ -1817,6 +1817,63 @@
                 "source": "https://github.com/php-fig/log/tree/3.0.0"
             },
             "time": "2021-07-14T16:46:02+00:00"
+        },
+        {
+            "name": "ruhulfbr/query-generator-from-csv",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ruhulfbr/query-generator-from-csv.git",
+                "reference": "7d010421aac97da02566107e42d49ae21aa99f4a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ruhulfbr/query-generator-from-csv/zipball/7d010421aac97da02566107e42d49ae21aa99f4a",
+                "reference": "7d010421aac97da02566107e42d49ae21aa99f4a",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ruhulfbr\\QueryGeneratorFromCsv\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Md Ruhul Amin",
+                    "email": "ruhul11bd@gmail.com"
+                }
+            ],
+            "description": "This package provides a simple utility to convert data from a CSV file into SQL queries for database insertion and Create table.",
+            "keywords": [
+                "column",
+                "composer",
+                "conversion",
+                "csv",
+                "data",
+                "database",
+                "generator",
+                "package",
+                "php",
+                "php8",
+                "query",
+                "row",
+                "sql",
+                "table",
+                "utilities"
+            ],
+            "support": {
+                "issues": "https://github.com/ruhulfbr/query-generator-from-csv/issues",
+                "source": "https://github.com/ruhulfbr/query-generator-from-csv/tree/v1.0.1"
+            },
+            "time": "2024-04-26T12:33:45+00:00"
         },
         {
             "name": "symfony/amqp-messenger",

@@ -29,35 +29,4 @@
         <div class="col-sm-12 col-md-3"></div>
     </div>
 
-    <br/>
-    <br/>
-
-    <h4 style="border-bottom: 1px solid #adb5bd !important;" class="pb-1 d-none">My List</h4>
-    <table class="table d-none">
-        <thead>
-        <tr>
-            <th>Date</th>
-            <th>Table Name</th>
-            <th>CSV</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for csv in csv_list %}
-            <tr>
-                <td>{{ csv.createdAt ? csv.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ csv.table_name }}</td>
-                <td>{{ csv.file_name }}</td>
-                <td>
-                    <a href="{{ csv.file_path }}" download="{{ csv.file_name }}">Download</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4" class="text-center">No records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
 {% endblock %}
