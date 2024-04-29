@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Ruhulfbr\CashApp\WebReceiptVerifier;
 
 class HomeController extends AbstractController
 {
@@ -26,6 +27,25 @@ class HomeController extends AbstractController
     {
 
     }
+
+    #[Route('/verify-cash-app-receipt', 'app_verify_cash_app_receipt')]
+    public function verifyCashAppReceipt(): Response
+    {
+        $receipt = "https://cash.app/payments/3vzl4ytg1hcjyul5axcto89ju/receipt";  // (String) Required, CashApp Web receipt;
+        $username = "your_cash_app_username"; // (String) Required, CashApp Account Username;
+        $reference = "your_payment_reference"; // (String) Required, CashApp Payment Reference;
+
+        // With Named argument
+        // $cashApp = new WebReceiptVerifier(_USERNAME: $username, _REFERENCE: $reference);
+
+        // Together
+        $cashApp = new WebReceiptVerifier($username, $reference);
+
+        echo "<pre>";
+        print_r($cashApp->verify($receipt));
+        exit();
+    }
+
 
     #[Route('/php82', 'app_php82')]
     public function php82(): Response
