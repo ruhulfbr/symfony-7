@@ -9,6 +9,7 @@ use Ruhulfbr\QueryGeneratorFromCsv\QueryGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Ruhulfbr\CsvToQuery\Query;
 
 
 class QueryMakerController extends AbstractController
@@ -31,7 +32,7 @@ class QueryMakerController extends AbstractController
             $filePath = $fileDir . $fileName;
 
             // Generate Query
-            $generator = new QueryGenerator($filePath, $create_query, $tableName);
+            $generator = new Query($filePath, $create_query, $tableName);
             $queryResult = $generator->generate();
 
             // Delete Uploaded File after generate

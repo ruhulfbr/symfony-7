@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "86f4fcdbd997ff652423d0d7de429cf6",
+    "content-hash": "f5a063a30a9f4c55deb839fa73e481ce",
     "packages": [
         {
             "name": "composer/semver",
@@ -2404,6 +2404,63 @@
                 "source": "https://github.com/ruhulfbr/cashapp-receipt-verifier/tree/v1.0.1"
             },
             "time": "2024-04-29T07:32:38+00:00"
+        },
+        {
+            "name": "ruhulfbr/csv-to-query",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ruhulfbr/csv-to-query.git",
+                "reference": "b63316f6a0cb486d91ccb75b47da1baaa8ebdde4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ruhulfbr/csv-to-query/zipball/b63316f6a0cb486d91ccb75b47da1baaa8ebdde4",
+                "reference": "b63316f6a0cb486d91ccb75b47da1baaa8ebdde4",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ruhulfbr\\CsvToQuery\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Md Ruhul Amin",
+                    "email": "ruhul11bd@gmail.com"
+                }
+            ],
+            "description": "This package provides a simple utility to convert data from a CSV file into SQL queries for database insertion and Create table.",
+            "keywords": [
+                "column",
+                "composer",
+                "conversion",
+                "csv",
+                "data",
+                "database",
+                "generator",
+                "package",
+                "php",
+                "php8",
+                "query",
+                "row",
+                "sql",
+                "table",
+                "utilities"
+            ],
+            "support": {
+                "issues": "https://github.com/ruhulfbr/csv-to-query/issues",
+                "source": "https://github.com/ruhulfbr/csv-to-query/tree/v1.0.0"
+            },
+            "time": "2024-04-29T12:26:18+00:00"
         },
         {
             "name": "ruhulfbr/query-generator-from-csv",
