@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f5a063a30a9f4c55deb839fa73e481ce",
+    "content-hash": "598b66e4bc815cc3d0a8b19424b7fdc4",
     "packages": [
         {
             "name": "composer/semver",
@@ -2461,6 +2461,70 @@
                 "source": "https://github.com/ruhulfbr/csv-to-query/tree/v1.0.0"
             },
             "time": "2024-04-29T12:26:18+00:00"
+        },
+        {
+            "name": "ruhulfbr/csvqry",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ruhulfbr/csvqry.git",
+                "reference": "1b48b9c831d18c29f68d0d5ba82318679d51b414"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ruhulfbr/csvqry/zipball/1b48b9c831d18c29f68d0d5ba82318679d51b414",
+                "reference": "1b48b9c831d18c29f68d0d5ba82318679d51b414",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~9.6"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/utility/helper.php"
+                ],
+                "psr-4": {
+                    "Ruhul\\CSVQuery\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Md Ruhul Amin",
+                    "email": "ruhul11bd@gmail.com"
+                }
+            ],
+            "description": "Make data retrieval query on CSV like laravel `Query Builder`",
+            "keywords": [
+                "array",
+                "arrayq",
+                "composer",
+                "conversion",
+                "csv",
+                "csvq",
+                "csvqry",
+                "data",
+                "json",
+                "jsonq",
+                "package",
+                "php",
+                "php8",
+                "query",
+                "row",
+                "sql"
+            ],
+            "support": {
+                "issues": "https://github.com/ruhulfbr/csvqry/issues",
+                "source": "https://github.com/ruhulfbr/csvqry/tree/v1.0.0"
+            },
+            "time": "2024-05-07T12:53:31+00:00"
         },
         {
             "name": "ruhulfbr/query-generator-from-csv",

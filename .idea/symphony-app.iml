@@ -103,6 +103,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/ralouphie/getallheaders" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/ruhulfbr/cashapp-receipt-verifier" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/ruhulfbr/csv-to-query" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/ruhulfbr/csvqry" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

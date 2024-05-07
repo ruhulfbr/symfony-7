@@ -14,6 +14,7 @@
     "easycorp/easyadmin-bundle": "^4",
     "ruhulfbr/cashapp-receipt-verifier": "^1.0",
     "ruhulfbr/csv-to-query": "^1.0",
+    "ruhulfbr/csvqry": "^1.0",
     "ruhulfbr/query-generator-from-csv": "^1.0",
     "symfony/amqp-messenger": "6.4.*",
     "symfony/asset": "6.4.*",

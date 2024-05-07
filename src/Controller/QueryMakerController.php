@@ -10,12 +10,23 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Ruhulfbr\CsvToQuery\Query;
+use Ruhul\CSVQuery\CSVQ;
 
 
 class QueryMakerController extends AbstractController
 {
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
+//        $data = CSVQ::from($this->getParameter('kernel.project_dir') . '/public/csv/sample-csv-1k.csv')
+//            ->where('id', '<=', 10)
+//            ->orderBy('id', 'desc')
+//            ->limit(5)
+//            ->get();
+//
+//        echo "<pre>";
+//        print_r($data);
+//        exit();
+
         $queryMaker = new QueryMakerCSV();
         $form = $this->createForm(QueryMakerType::class, $queryMaker);
         $form->handleRequest($request);
