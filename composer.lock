@@ -2464,16 +2464,16 @@
         },
         {
             "name": "ruhulfbr/csvqry",
-            "version": "1.0.0",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ruhulfbr/csvqry.git",
-                "reference": "1b48b9c831d18c29f68d0d5ba82318679d51b414"
+                "reference": "45b4219d10957bd0ef92993938bb7602a7857c6c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ruhulfbr/csvqry/zipball/1b48b9c831d18c29f68d0d5ba82318679d51b414",
-                "reference": "1b48b9c831d18c29f68d0d5ba82318679d51b414",
+                "url": "https://api.github.com/repos/ruhulfbr/csvqry/zipball/45b4219d10957bd0ef92993938bb7602a7857c6c",
+                "reference": "45b4219d10957bd0ef92993938bb7602a7857c6c",
                 "shasum": ""
             },
             "require": {
@@ -2522,9 +2522,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ruhulfbr/csvqry/issues",
-                "source": "https://github.com/ruhulfbr/csvqry/tree/v1.0.0"
+                "source": "https://github.com/ruhulfbr/csvqry/tree/v1.0.2"
             },
-            "time": "2024-05-07T12:53:31+00:00"
+            "time": "2024-05-08T11:27:46+00:00"
         },
         {
             "name": "ruhulfbr/query-generator-from-csv",

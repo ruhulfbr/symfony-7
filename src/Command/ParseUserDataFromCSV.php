@@ -11,9 +11,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 // the name of the command is what users type after "php bin/console"
 #[AsCommand(
     name: 'app:parse-user-data-from-csv',
-    description: 'Parse User data from CSV and show total number of User and their avarage age.',
-    hidden: false,
-    aliases: ['app:parse-user-data']
+    description: 'Parse User data from CSV and show total number of User and their average age.',
+    aliases: ['app:parse-user-data'],
+    hidden: false
 )]
 class ParseUserDataFromCSV extends Command
 {
@@ -30,14 +30,14 @@ class ParseUserDataFromCSV extends Command
 
         $result = $this->parseCSV();
 
-        $output->writeln("Status: ".$result->type);
-        $output->writeln("Message: ".$result->message);
+        $output->writeln("Status: " . $result->type);
+        $output->writeln("Message: " . $result->message);
 
-        if($result->type == 'ok'){
+        if ($result->type == 'ok') {
             $totalUsers = 0;
             $totalAge = 0;
 
-            if( !empty($result->users)){
+            if (!empty($result->users)) {
                 foreach ($result->users as $user) {
                     $totalUsers++;
                     $totalAge += $user['age'];
@@ -46,12 +46,11 @@ class ParseUserDataFromCSV extends Command
 
             $averageAge = $totalUsers ? round($totalAge / $totalUsers) : 0;
 
-            $output->writeln("Total Users: ".$totalUsers);
-            $output->writeln("Avarage Age: ".$averageAge);
+            $output->writeln("Total Users: " . $totalUsers);
+            $output->writeln("Avarage Age: " . $averageAge);
 
             $output->writeln('Operation Completed.');
-        }
-        else{
+        } else {
             $output->writeln('Operation Failed.');
         }
 
@@ -101,16 +100,16 @@ class ParseUserDataFromCSV extends Command
         $handle = fopen($filePath, 'r');
 
         $skip = false;
-        while(($data = fgetcsv($handle)) !== false){
-            if(!$skip){
+        while (($data = fgetcsv($handle)) !== false) {
+            if (!$skip) {
                 $skip = true;
                 continue;
             }
 
             yield [
-                'id'   => $data[0],
+                'id' => $data[0],
                 'name' => $data[1],
-                'age'  => $data[2],
+                'age' => $data[2],
             ];
         }
 
