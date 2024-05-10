@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Ruhulfbr\CsvToQuery\Query;
 use Ruhul\CSVQuery\CSVQ as csvq;
+use Ruhul\ExcelQuery\EXLQ as exlq;
 
 class QueryMakerController extends AbstractController
 {
@@ -71,6 +72,7 @@ class QueryMakerController extends AbstractController
             $filePath = $this->getParameter('kernel.project_dir') . '/public/csv/sample-csv-100k.csv';
         }
 
+        // return exlq::from($filePath)->where('Data_value', '<', 1250)->min('Data_value');
         return csvq::from($filePath)->where('Data_value', '<', 1250)->min('Data_value');
     }
 
